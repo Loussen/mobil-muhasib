@@ -1,0 +1,14 @@
+# docker containeri up elemek ucun
+docker compose up -d
+
+# eger hansisa config deyishibse onda
+docker compose up -d --build
+
+# docker containeri down elemek ucun
+docker compose down -t 0
+
+# docker containerlere baxmaq ucun
+docker ps -a
+
+# docker container icine daxil olmaq ucun (php artisan composer kimi commandlari run elemek ucun)
+docker exec -it [container_name] bash
