@@ -26,7 +26,7 @@ class PageCrudController extends CrudController
     {
         $this->crud->setModel(Page::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/page');
-        $this->crud->setEntityNameStrings(trans('backpack::pagemanager.page'), trans('backpack::pagemanager.pages'));
+        $this->crud->setEntityNameStrings('səhifə', 'səhifələr');
     }
 
     protected function setupListOperation()

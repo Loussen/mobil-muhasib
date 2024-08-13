@@ -28,7 +28,7 @@ class ServiceCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Service::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/service');
-        CRUD::setEntityNameStrings('service', 'services');
+        CRUD::setEntityNameStrings('xidmət', 'xidmətlərimiz');
     }
 
     /**

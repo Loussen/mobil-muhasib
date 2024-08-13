@@ -7,3 +7,10 @@ if (!function_exists('my_asset')) {
         return asset($assetPath, $secure);
     }
 }
+
+if (!function_exists('getCleanString')) {
+    function getCleanString($data): string
+    {
+        return htmlspecialchars(strip_tags(trim($data)));
+    }
+}

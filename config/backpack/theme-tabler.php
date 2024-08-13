@@ -22,13 +22,13 @@ return [
      * Possible values: horizontal, horizontal_dark, horizontal_overlap, vertical,
      * vertical_dark, vertical_transparent (legacy theme), right_vertical, right_vertical_dark, right_vertical_transparent
      */
-    'layout' => 'horizontal',
+    'layout' => 'vertical',
 
     /**
      * Pick a login page layout.
      * Possible values: default, illustration, cover
      */
-    'auth_layout' => 'illustration', // default, illustration, cover
+    'auth_layout' => 'cover', // default, illustration, cover
 
     /**
      * Here you can easily load your own extra css styles.
@@ -85,7 +85,7 @@ return [
         /**
          * When true, the sidebar content for vertical layouts will not scroll with the rest of the content.
          */
-        'sidebarFixed' => false,
+        'sidebarFixed' => true,
 
         /**
          * When true, horizontal layouts will display the classic top bar on top to free some space when multiple nav items are used.

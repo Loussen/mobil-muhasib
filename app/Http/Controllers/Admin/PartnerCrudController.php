@@ -28,7 +28,7 @@ class PartnerCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Partner::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/partner');
-        CRUD::setEntityNameStrings('partner', 'partners');
+        CRUD::setEntityNameStrings('partnyor', 'partnyorlar');
     }
 
     /**

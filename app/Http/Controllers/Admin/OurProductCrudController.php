@@ -28,7 +28,7 @@ class OurProductCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\OurProduct::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/our-product');
-        CRUD::setEntityNameStrings('our product', 'our products');
+        CRUD::setEntityNameStrings('məhsul', 'məhsullarımız');
     }
 
     /**

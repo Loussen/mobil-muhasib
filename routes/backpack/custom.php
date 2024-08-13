@@ -34,4 +34,6 @@ Route::group([
     Route::crud('service', 'ServiceCrudController');
     Route::crud('contact-form', 'ContactFormCrudController');
     Route::crud('our-product', 'OurProductCrudController');
+    Route::crud('customers', 'CustomersCrudController');
+    Route::crud('tax', 'TaxCrudController');
 });

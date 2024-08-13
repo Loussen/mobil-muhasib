@@ -18,7 +18,7 @@ class MenuItemCrudController extends CrudController
     {
         $this->crud->setModel(MenuItem::class);
         $this->crud->setRoute(config('backpack.base.route_prefix').'/menu-item');
-        $this->crud->setEntityNameStrings('menu item', 'menu items');
+        $this->crud->setEntityNameStrings('menyu', 'menyular');
 
         $this->crud->enableReorder('name', 3);
 
