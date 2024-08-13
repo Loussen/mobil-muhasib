@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,7 @@ class Tax extends Model
 {
     use CrudTrait;
     use HasFactory;
+    use HasTranslations;
 
     /*
     |--------------------------------------------------------------------------
@@ -23,6 +25,7 @@ class Tax extends Model
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
+    public $translatable = ['question', 'answer'];
 
     /*
     |--------------------------------------------------------------------------
