@@ -3,20 +3,21 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
 use Intervention\Image\ImageManagerStatic as Image;
 
-class Page extends Model
+class LegislativeActs extends Model
 {
     use CrudTrait;
-    use Sluggable;
-    use SluggableScopeHelpers;
+    use HasFactory;
     use HasTranslations;
+    use Sluggable, SluggableScopeHelpers;
 
     /*
     |--------------------------------------------------------------------------
@@ -24,19 +25,14 @@ class Page extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'pages';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
-    // protected $guarded = ['id'];
-    protected $fillable = ['template', 'name', 'title', 'slug', 'content', 'extras'];
+    protected $table = 'legislative_acts';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
+    protected $fillable = ['slug', 'title', 'content', 'image', 'status', 'date'];
     // protected $hidden = [];
-    // protected $dates = [];
-    protected $fakeColumns = ['extras'];
-//    protected $casts = [
-//        'extras' => 'array',
-//    ];
 
-    public $translatable = ['name', 'title', 'content', 'service_title', 'extras'];
+    public $translatable = ['title','content', 'extras'];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -58,22 +54,6 @@ class Page extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getTemplateName()
-    {
-        return str_replace('_', ' ', Str::title($this->template));
-    }
-
-    public function getPageLink()
-    {
-        return url($this->slug);
-    }
-
-    public function getOpenButton()
-    {
-        return '<a class="btn btn-sm btn-link" href="'.$this->getPageLink().'" target="_blank">'.
-            '<i class="la la-eye"></i> '.trans('backpack::pagemanager.open').'</a>';
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -88,11 +68,11 @@ class Page extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | ACCESORS
+    | ACCESSORS
     |--------------------------------------------------------------------------
     */
 
-    // The slug is created automatically from the "name" field if no slug exists.
+    // The slug is created automatically from the "title" field if no slug exists.
     public function getSlugOrTitleAttribute()
     {
         if ($this->slug != '') {
@@ -107,13 +87,14 @@ class Page extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function setServiceImageAttribute($value): void
+
+    public function setImageAttribute($value): void
     {
-        $attribute_name = 'service_image';
+        $attribute_name = 'image';
         // or use your own disk, defined in config/filesystems.php
         $disk = 'public';
         // destination path relative to the disk above
-        $destination_path = "uploads/images/service";
+        $destination_path = "uploads/images/legislative-acts";
 
         // if the image was erased
         if (empty($value)) {
@@ -129,7 +110,7 @@ class Page extends Model
         if (Str::startsWith($value, 'data:image'))
         {
             // 0. Make the image
-            $image = Image::make($value)->encode('jpg', 90)->resize(1290,700);
+            $image = Image::make($value)->encode('jpg', 90)->resize(390,450);
 
             // 1. Generate a filename.
             $filename = md5($value.time()).'.png';

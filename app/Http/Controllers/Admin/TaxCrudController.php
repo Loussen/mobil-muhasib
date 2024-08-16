@@ -96,5 +96,7 @@ class TaxCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        $this->crud->removeField('type');
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\OurProductRequest;
+use App\Http\Requests\UsefulInformationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class OurProductCrudController
+ * Class UsefulInformationCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class OurProductCrudController extends CrudController
+class UsefulInformationCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -21,37 +21,30 @@ class OurProductCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     *
+     * 
      * @return void
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\OurProduct::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/our-product');
-        CRUD::setEntityNameStrings('məhsul', 'məhsullarımız');
+        CRUD::setModel(\App\Models\UsefulInformation::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/useful-information');
+        CRUD::setEntityNameStrings('Faydalı Məlumat', 'Faydalı Məlumatlar');
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     *
+     * 
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
-    protected function setupListOperation(): void
+    protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('description');
-//        CRUD::addColumn([
-//            'name' => 'content',
-//            'label' => 'Content',
-//            'type' => 'tinymce',
-//            'placeholder' => 'Your textarea text here',
-//        ]);
-        CRUD::addColumn([
-            'name' => 'image',
-            'type' => 'image',
-            'disk' => 'public',
-            'prefix' => ''
+        CRUD::column('title');
+        CRUD::column('slug');
+        $this->crud->addColumn([
+            'name' => 'featured',
+            'label' => 'Featured',
+            'type' => 'check',
         ]);
         CRUD::addColumn([
             'name' => 'inner_image',
@@ -59,7 +52,12 @@ class OurProductCrudController extends CrudController
             'disk' => 'public',
             'prefix' => ''
         ]);
-        CRUD::column('work_date');
+        CRUD::addColumn([
+            'name' => 'image',
+            'type' => 'image',
+            'disk' => 'public',
+            'prefix' => ''
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -69,44 +67,43 @@ class OurProductCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
-    protected function setupCreateOperation(): void
+    protected function setupCreateOperation()
     {
-        CRUD::setValidation(OurProductRequest::class);
-        CRUD::field('name')->wrapper(['class' => 'form-group col-md-6']);
-        CRUD::field('description')->type('textarea')->wrapper(['class' => 'form-group col-md-6']);
+        CRUD::setValidation(UsefulInformationRequest::class);
+        CRUD::field('title')->wrapper(['class' => 'form-group col-md-6']);
+        CRUD::field('slug')->type('text')->wrapper(['class' => 'form-group col-md-6'])->hint('Will be automatically generated from your title, if left empty.');
+        CRUD::field('short_description')->type('textarea');
         CRUD::addField([
             'name' => 'image',
-            'label' =>'Image',
+            'label' => 'Image',
             'type' => 'image',
-            'upload' => true,
-            'wrapper' => ['class' => 'form-group col-md-6'],
-            'hint' => 'Dimensions: 520 X 700'
+            'hint' => 'Dimensions: 280 X 380',
+            'wrapper' => [
+                'class' => 'form-group col-md-6'
+            ],
         ]);
-
         CRUD::addField([
             'name' => 'inner_image',
-            'label' =>'Inner Image',
             'type' => 'image',
-            'upload' => true,
-            'wrapper' => ['class' => 'form-group col-md-6'],
-            'hint' => 'Dimensions: 520 X 700'
-        ]);
-
-        CRUD::addField([
-            'name' => 'slug',
-            'label' => 'Slug (URL)',
-            'type' => 'text',
-            'hint' => 'Will be automatically generated from your title, if left empty.',
+            'hint' => 'Dimensions: 1290 X 700',
+            'wrapper' => [
+                'class' => 'form-group col-md-6'
+            ]
         ]);
         CRUD::addField([
             'name' => 'content',
             'label' => 'Content',
             'type' => 'tinymce',
             'placeholder' => 'Your textarea text here',
+        ]);
+        CRUD::addField([
+            'name' => 'featured',
+            'label' => 'Featured item',
+            'type' => 'checkbox',
         ]);
         CRUD::addField([
             'name' => 'metas_separator',
@@ -120,7 +117,6 @@ class OurProductCrudController extends CrudController
             'hint' => 'Max: 60 character',
             'store_in' => 'extras',
         ]);
-
         CRUD::addField([
             'name' => 'meta_description',
             'label' => trans('backpack::pagemanager.meta_description'),
@@ -128,7 +124,6 @@ class OurProductCrudController extends CrudController
             'hint' => '160 simvol olmalıdır',
             'store_in' => 'extras',
         ]);
-
         CRUD::addField([
             'name' => 'meta_keywords',
             'type' => 'textarea',
@@ -137,18 +132,6 @@ class OurProductCrudController extends CrudController
             'hint' => '8 açar söz və vergüllə ayrılmalıdır',
             'store_in' => 'extras',
         ]);
-//        CRUD::addField([
-//            'name' => 'meta_image',
-//            'label' => 'Meta image',
-//            'type' => 'upload',
-//            'hint' => 'Dimensions: (1200 X 600) and (max: 8 MB)',
-//            'fake' => true,
-//            'store_in' => 'extras',
-//            'withFiles' => [
-//                'disk' => 'public',
-//                'path' => 'uploads/images/our_product/meta_image'
-//            ]
-//        ]);
 
         /**
          * Fields can be defined using the fluent syntax:
@@ -158,7 +141,7 @@ class OurProductCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

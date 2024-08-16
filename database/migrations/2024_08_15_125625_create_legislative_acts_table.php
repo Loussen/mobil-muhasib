@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('our_products', function (Blueprint $table) {
+        Schema::create('legislative_acts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->text('content')->nullable();
-            $table->string('image');
-            $table->text('inner_image');
+            $table->string('title');
             $table->string('slug')->default('');
+            $table->text('content');
+            $table->string('image')->nullable();
+            $table->enum('status', ['PUBLISHED', 'DRAFT'])->default('PUBLISHED');
+            $table->date('date');
             $table->longText('extras')->nullable();
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('our_products');
+        Schema::dropIfExists('legislative_acts');
     }
 };

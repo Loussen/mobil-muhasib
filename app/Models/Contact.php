@@ -28,6 +28,10 @@ class Contact extends Model
 
     public $translatable = ['title', 'short_description', 'address'];
 
+    protected $casts = [
+        'social_networks'   => 'array'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

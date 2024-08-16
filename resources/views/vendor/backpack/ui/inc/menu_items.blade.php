@@ -4,13 +4,17 @@
 
 <x-backpack::menu-item title='Səhifələr' icon='la la-file-o' :link="backpack_url('page')"/>
 <x-backpack::menu-item title='Menyular' icon='la la-list' :link="backpack_url('menu-item')"/>
-<x-backpack::menu-item title="İstifadəçilər" icon="la la-users" :link="backpack_url('customers')"/>
+<x-backpack::menu-dropdown title="İstifadəçilər" icon="la la-users">
+    <x-backpack::menu-dropdown-item title="Müştərilər" icon="la la-user" :link="backpack_url('customers')"/>
+    <x-backpack::menu-dropdown-item title="Müştəri məlumatları" icon="la la-info" :link="backpack_url('customer-info')"/>
+</x-backpack::menu-dropdown>
 <x-backpack::menu-dropdown title="Bloq" icon="la la-puzzle-piece">
     <x-backpack::menu-dropdown-item title="Məqalələr" icon="la la-newspaper-o" :link="backpack_url('article')"/>
     <x-backpack::menu-dropdown-item title="Kateqorialar" icon="la la-list" :link="backpack_url('category')"/>
     <x-backpack::menu-dropdown-item title="Teqlər" icon="la la-tag" :link="backpack_url('tag')"/>
 </x-backpack::menu-dropdown>
-
+<x-backpack::menu-item title="Qanunvericilik Aktları" icon="la la-balance-scale" :link="backpack_url('legislative-acts')" />
+<x-backpack::menu-item title="Faydalı Məlumatlar" icon="la la-newspaper" :link="backpack_url('useful-information')" />
 <x-backpack::menu-dropdown title="Vergi" icon="la la-list">
     <x-backpack::menu-dropdown-item title="Sadələşdirilmiş vergi" icon="la la-question-circle"
                                     :link="backpack_url('tax?type='.TaxEnum::SIMPLIFIED->name)"/>

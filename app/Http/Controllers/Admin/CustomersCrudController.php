@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CustomersRequest;
+use App\Models\Customers;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -47,6 +48,13 @@ class CustomersCrudController extends CrudController
         CRUD::column('fin')->label('Fin kod');
         CRUD::column('passport')->label('Seriya nömrəsi');
         CRUD::column('voen')->label('VOEN');
+
+        CRUD::addButton('line', 'customer_info', 'view', 'buttons.customer_info','beginning');
+
+        $this->addCustomCrudFilters();
+
+        CRUD::enableDetailsRow();
+        CRUD::setDetailsRowView('vendor.backpack.crud.details_row.customer_info');
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -111,5 +119,104 @@ class CustomersCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function addCustomCrudFilters(): void
+    {
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'name',
+                'label' => 'Ad',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'name', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'surname',
+                'label' => 'Soyad',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'surname', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'father_name',
+                'label' => 'Ata adı',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'father_name', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'email',
+                'label' => 'Email',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'email', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'phone',
+                'label' => 'Telefon',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'phone', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'fin',
+                'label' => 'FIN kod',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'fin', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'passport',
+                'label' => 'Seriya nömrəsi',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'passport', 'LIKE', "$value%");
+            }
+        );
+
+        CRUD::addFilter(
+            [
+                'type' => 'text',
+                'name' => 'voen',
+                'label' => 'VOEN',
+            ],
+            false,
+            function ($value) {
+                CRUD::addClause('where', 'voen', 'LIKE', "$value%");
+            }
+        );
     }
 }

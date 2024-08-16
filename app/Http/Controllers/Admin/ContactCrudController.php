@@ -39,7 +39,10 @@ class ContactCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        CRUD::column('title');
+        CRUD::column('short_description');
+        CRUD::column('phone');
+        CRUD::column('address');
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -56,7 +59,10 @@ class ContactCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ContactRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::field('title');
+        CRUD::field('short_description')->type('textarea');
+        CRUD::field('phone');
+        CRUD::field('address')->type('textarea');
 
         $subfieldsSocialProfileInfo[] = [
             'name'  => 'icon',
@@ -99,5 +105,24 @@ class ContactCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function autoSetupShowOperation()
+    {
+        $this->setupListOperation();
+        $subfieldsSocialProfileInfo[] = [
+            'name'  => 'icon',
+        ];
+
+        $subfieldsSocialProfileInfo[] = [
+            'name'        => 'link',
+            'type'        => 'url',
+        ];
+
+        CRUD::addColumn([
+            'name'          => 'social_networks',
+            'type'          => "repeatable",
+            'subfields'     => $subfieldsSocialProfileInfo,
+        ]);
     }
 }
