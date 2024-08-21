@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Traits\ModelEventLogger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -82,20 +81,8 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function pudos()
+    public function customers()
     {
-        return $this->belongsToMany(Pudo::class, 'admin_pudo');
-    }
-
-    public static function getPudoIds(): array
-    {
-        $admin = Auth::user();
-
-        $ids = [];
-        foreach ($admin->pudos as $pudo_id) {
-            $ids[] = $pudo_id['id'];
-        }
-
-        return $ids;
+        return $this->belongsToMany(Customers::class, 'admin_customer', 'admin_id', 'customer_id');
     }
 }

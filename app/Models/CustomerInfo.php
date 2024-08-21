@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerInfo extends Model
 {
@@ -26,13 +27,13 @@ class CustomerInfo extends Model
     // protected $hidden = [];
 
     protected $casts = [
-        'stores'   => 'array',
-        'workers'   => 'array',
-        'direction_action'   => 'array',
-        'debt_information'   => 'array',
-        'cash_box_information'   => 'array',
-        'bank_details'   => 'array',
-        'control_cash_registers'   => 'array',
+//        'stores'   => 'array',
+//        'workers'   => 'array',
+//        'direction_action'   => 'array',
+//        'debt_information'   => 'array',
+//        'cash_box_information'   => 'array',
+//        'bank_details'   => 'array',
+//        'control_cash_registers'   => 'array',
     ];
 
     /*
@@ -69,4 +70,6 @@ class CustomerInfo extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+
 }

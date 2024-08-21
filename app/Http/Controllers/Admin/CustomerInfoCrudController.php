@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CustomerInfoRequest;
 use App\Models\Customers;
+use App\Models\DirectionActions;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Widget;
 
 /**
  * Class CustomerInfoCrudController
@@ -18,7 +20,7 @@ class CustomerInfoCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -62,6 +64,9 @@ class CustomerInfoCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(CustomerInfoRequest::class);
+
+        Widget::add()->type('script')->content('assets/js/admin/forms/customer_info.js');
+
         CRUD::addField([
             'name'        => 'customer_id',
             'type'        => 'select2',
@@ -69,6 +74,13 @@ class CustomerInfoCrudController extends CrudController
             'allows_null' => true,
             'attribute'   => 'full_name',
         ]);
+
+        $subFieldsStoreInfo[] = [
+            'name'        => 'name',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
 
         $subFieldsStoreInfo[] = [
             'name'        => 'address',
@@ -90,6 +102,31 @@ class CustomerInfoCrudController extends CrudController
             ],
         ];
         $subFieldsStoreInfo[] = [
+            'name'        => 'registration_date',
+            'label'       => 'Qeydiyyat tarixi',
+            'type'        => 'datetime_picker',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
+        $subFieldsStoreInfo[] = [
+            'name'        => 'type',
+            'label'       => 'Tip',
+            'type'        => 'select_from_array',
+            'options'     => config('data.store_types'),
+            'allows_null' => true,
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
+        $subFieldsStoreInfo[] = [
+            'name'        => 'price',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3 d-none',
+            ],
+            'dependency' => []
+        ];
+        $subFieldsStoreInfo[] = [
             'name'     => 'status',
             'type'     => 'switch',
             'label'    => 'Status',
@@ -98,6 +135,7 @@ class CustomerInfoCrudController extends CrudController
             'offLabel' => '✕',
             'wrapper'  => ['class' => 'form-group col-lg-2 pt-5'],
         ];
+
         CRUD::addField([
             'name'          => 'stores',
             'tab'           => 'Obyekt məlumatları',
@@ -113,26 +151,32 @@ class CustomerInfoCrudController extends CrudController
         $subFieldsWorkersInfo[] = [
             'name'        => 'name',
             'wrapper'     => [
-                'class' => 'form-group col-md-3'
+                'class' => 'form-group col-md-4'
             ],
         ];
         $subFieldsWorkersInfo[] = [
             'name'        => 'surname',
             'wrapper'     => [
-                'class' => 'form-group col-md-3'
+                'class' => 'form-group col-md-4'
+            ],
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'father_name',
+            'wrapper'     => [
+                'class' => 'form-group col-md-4'
             ],
         ];
         $subFieldsWorkersInfo[] = [
             'name'    => 'phone',
-            'type'    => 'phone',
-            'config'  => [
-                'excludeCountries'      => ['us'],
-                'initialCountry'        => 'az',
-                'separateDialCode'      => true,
-                'nationalMode'          => true,
-                'autoHideDialCode'      => false,
-                'placeholderNumberType' => 'MOBILE',
-            ],
+            'type'    => 'text',
+//            'config'  => [
+//                'excludeCountries'      => ['us'],
+//                'initialCountry'        => 'az',
+//                'separateDialCode'      => true,
+//                'nationalMode'          => true,
+//                'autoHideDialCode'      => false,
+//                'placeholderNumberType' => 'MOBILE',
+//            ],
             'wrapper' => [
                 'class' => 'form-group col-md-3'
             ]
@@ -143,9 +187,60 @@ class CustomerInfoCrudController extends CrudController
                 'class' => 'form-group col-md-3'
             ],
         ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'position',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'registration_date',
+            'type'        => 'datetime_picker',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'salary',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'     => 'work_status',
+            'type'     => 'switch',
+            'label'    => 'Status',
+            'color'    => 'primary',
+            'onLabel'  => '✓',
+            'offLabel' => '✕',
+            'wrapper'  => ['class' => 'form-group col-md-3 pt-5 pl-10'],
+            'default'  => 1
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'termination_date',
+            'label'       => 'Xitam tarixi',
+            'type'        => 'datetime_picker',
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+            'hint'   => 'Əgər xitam verilibsə daxil edin'
+        ];
+        $subFieldsWorkersInfo[] = [
+            'name'        => 'notification_file',
+            'label'       => 'Bildiriş faylı',
+            'type'        => 'upload',
+            'deleteWhenEntryIsDeleted' => true,
+            'withFiles'   => ([
+                'disk' => 'public',
+                'path' => 'notifications'
+            ]),
+            'wrapper'     => [
+                'class' => 'form-group col-md-3'
+            ],
+        ];
         CRUD::addField([
             'name'          => 'workers',
-            'tab'          => 'İşci məlumatları',
+            'tab'           => 'İşci məlumatları',
             'type'          => "repeatable",
             'label'         => '',
             'subfields'     => $subFieldsWorkersInfo,
@@ -156,17 +251,13 @@ class CustomerInfoCrudController extends CrudController
         ]);
 
         $subFieldsDirectionActionsInfo[] = [
-            'name'        => 'direction_1',
-            'label'       => '',
+            'name'        => 'direction_id',
+            'type'        => 'select2',
+            'label'         => 'Fəaliyyət (kodu və adı)',
+            'attribute'   => 'code_name',
+            'model'       => "App\Models\DirectionActions",
             'wrapper'     => [
-                'class' => 'form-group col-md-6'
-            ],
-        ];
-        $subFieldsDirectionActionsInfo[] = [
-            'name'        => 'direction_2',
-            'label'       => '',
-            'wrapper'     => [
-                'class' => 'form-group col-md-6'
+                'class' => 'form-group col-md-12'
             ],
         ];
         CRUD::addField([
@@ -175,62 +266,42 @@ class CustomerInfoCrudController extends CrudController
             'type'          => "repeatable",
             'label'         => '',
             'subfields'     => $subFieldsDirectionActionsInfo,
-            'max_rows'      => 1,
+            'max_rows'      => 10,
             'min_rows'      => 1,
             'init_rows'     => 1,
+            'new_item_label'  => 'Fəaliyyət istiqaməti əlavə et'
         ]);
 
-        $subFieldsDebtInfo[] = [
-            'name'        => 'debt_1',
-            'label'       => '',
-            'wrapper'     => [
-                'class' => 'form-group col-md-6'
-            ],
-        ];
-        $subFieldsDebtInfo[] = [
-            'name'        => 'debt_2',
-            'label'       => '',
-            'wrapper'     => [
-                'class' => 'form-group col-md-6'
-            ],
-        ];
         CRUD::addField([
             'name'          => 'debt_information',
             'tab'          => 'Borc məlumatları (cari borclar)',
             'type'          => "repeatable",
             'label'         => '',
-            'subfields'     => $subFieldsDebtInfo,
             'max_rows'      => 1,
             'min_rows'      => 1,
             'init_rows'     => 1,
         ]);
 
         $subFieldsCashBoxInfo[] = [
-            'name'        => 'current',
-            'label'       => 'İstifadə olunan kassa',
+            'name'        => 'store_code',
+            'label'       => 'Obyekt kodu',
             'wrapper'     => [
-                'class' => 'form-group col-md-3'
+                'class' => 'form-group col-md-4'
             ],
         ];
         $subFieldsCashBoxInfo[] = [
-            'name'        => 'registered',
-            'label'       => 'Qeydiyyatdakı kassa',
+            'name'        => 'factory_code',
+            'label'       => 'Zavod kodu',
             'wrapper'     => [
-                'class' => 'form-group col-md-3'
+                'class' => 'form-group col-md-4'
             ],
         ];
         $subFieldsCashBoxInfo[] = [
-            'name'        => 'company',
-            'label'       => 'Kassanın məxsus olduğu şirkət',
+            'name'        => 'registration_date',
+            'label'       => 'Qeydiyyat tarixi',
+            'type'        => 'datetime_picker',
             'wrapper'     => [
-                'class' => 'form-group col-md-3'
-            ],
-        ];
-        $subFieldsCashBoxInfo[] = [
-            'name'        => 'pos_terminal_bank',
-            'label'       => 'Pos-terminalın bankı',
-            'wrapper'     => [
-                'class' => 'form-group col-md-3'
+                'class' => 'form-group col-md-4'
             ],
         ];
         CRUD::addField([
@@ -239,23 +310,40 @@ class CustomerInfoCrudController extends CrudController
             'type'          => "repeatable",
             'label'         => '',
             'subfields'     => $subFieldsCashBoxInfo,
-            'max_rows'      => 1,
+            'max_rows'      => 10,
             'min_rows'      => 1,
             'init_rows'     => 1,
+            'new_item_label'  => 'Kassa əlavə et'
         ]);
 
         $subFieldsBankInfo[] = [
-            'name'        => 'requisite_1',
-            'label'       => '',
+            'name'        => 'name',
+            'label'       => 'Bank adı',
             'wrapper'     => [
-                'class' => 'form-group col-md-6'
+                'class' => 'form-group col-md-4'
             ],
         ];
         $subFieldsBankInfo[] = [
-            'name'        => 'requisite_2',
-            'label'       => '',
+            'name'        => 'currency',
+            'label'       => 'Valyuta',
+            'type'        => 'select_from_array',
+            'options'     => [1 => 'AZN', 2 => 'USD', 3 => 'EUR', 4 => 'RUB', 5 => 'TRY'],
+            'allows_null' => true,
             'wrapper'     => [
-                'class' => 'form-group col-md-6'
+                'class' => 'form-group col-md-4'
+            ],
+        ];
+        $subFieldsBankInfo[] = [
+            'name'        => 'requisite_file',
+            'label'       => 'Rekvizit faylı',
+            'type'        => 'upload',
+            'deleteWhenEntryIsDeleted' => true,
+            'withFiles'   => ([
+                'disk' => 'public',
+                'path' => 'requisites'
+            ]),
+            'wrapper'     => [
+                'class' => 'form-group col-md-4'
             ],
         ];
         CRUD::addField([
@@ -269,27 +357,22 @@ class CustomerInfoCrudController extends CrudController
             'init_rows'     => 1,
         ]);
 
-        $subFieldsControlCashRegisters[] = [
-            'name'        => 'cash_1',
-            'label'       => '',
-            'wrapper'     => [
-                'class' => 'form-group col-md-6'
-            ],
-        ];
-        $subFieldsControlCashRegisters[] = [
-            'name'        => 'cash_1_details',
-            'label'       => '',
-            'wrapper'     => [
-                'class' => 'form-group col-md-6'
-            ],
-        ];
         CRUD::addField([
-            'name'          => 'control_cash_registers',
-            'tab'          => 'Nəzarət kassa aparatları',
+            'name'          => 'overhead',
+            'tab'          => 'Qaimə siyahısı',
             'type'          => "repeatable",
             'label'         => '',
-            'subfields'     => $subFieldsControlCashRegisters,
-            'max_rows'      => 10,
+            'max_rows'      => 1,
+            'min_rows'      => 1,
+            'init_rows'     => 1,
+        ]);
+
+        CRUD::addField([
+            'name'          => 'bank_statements',
+            'tab'          => 'Bank çıxarışları',
+            'type'          => "repeatable",
+            'label'         => '',
+            'max_rows'      => 1,
             'min_rows'      => 1,
             'init_rows'     => 1,
         ]);

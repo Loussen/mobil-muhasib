@@ -39,4 +39,5 @@ Route::group([
     Route::crud('customer-info', 'CustomerInfoCrudController');
     Route::crud('legislative-acts', 'LegislativeActsCrudController');
     Route::crud('useful-information', 'UsefulInformationCrudController');
+    Route::crud('user', 'AdminCrudController');
 });
