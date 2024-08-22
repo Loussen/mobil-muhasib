@@ -272,16 +272,6 @@ class CustomerInfoCrudController extends CrudController
             'new_item_label'  => 'Fəaliyyət istiqaməti əlavə et'
         ]);
 
-        CRUD::addField([
-            'name'          => 'debt_information',
-            'tab'          => 'Borc məlumatları (cari borclar)',
-            'type'          => "repeatable",
-            'label'         => '',
-            'max_rows'      => 1,
-            'min_rows'      => 1,
-            'init_rows'     => 1,
-        ]);
-
         $subFieldsCashBoxInfo[] = [
             'name'        => 'store_code',
             'label'       => 'Obyekt kodu',

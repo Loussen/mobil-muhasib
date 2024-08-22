@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('stores')->nullable();
             $table->json('workers')->nullable();
             $table->json('direction_action')->nullable();
-            $table->json('debt_information')->nullable();
             $table->json('cash_box_information')->nullable();
             $table->json('bank_details')->nullable();
             $table->json('control_cash_registers')->nullable();

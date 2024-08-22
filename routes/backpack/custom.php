@@ -40,4 +40,5 @@ Route::group([
     Route::crud('legislative-acts', 'LegislativeActsCrudController');
     Route::crud('useful-information', 'UsefulInformationCrudController');
     Route::crud('user', 'AdminCrudController');
+    Route::crud('customer-debts', 'CustomerDebtsCrudController');
 });
